@@ -8,6 +8,7 @@ where
 import Control.Monad
 import Data.Stack
 
+-- | Repeat monadic bind `n` times
 bindN :: (Monad m, Integral n) => (a -> m a) -> n -> (a -> m a)
 bindN f n = foldr (>=>) return (replicate (fromIntegral n) f)
 
