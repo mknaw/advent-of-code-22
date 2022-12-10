@@ -3,11 +3,13 @@ module Lib.Utils
     boolToInt,
     makeStack,
     pairMap,
+    trim,
   )
 where
 
 import Control.Monad
 import Data.Stack
+import Data.Char (isSpace)
 
 boolToInt :: Bool -> Int
 boolToInt True = 1
@@ -24,3 +26,8 @@ pairMap f (x, y) = (f x, f y)
 -- | Make a `Stack` from a list
 makeStack :: [a] -> Stack a
 makeStack = foldr (flip stackPush) stackNew
+
+-- | Trim whitespace from the beginning and end of a string
+trim :: String -> String
+trim = f . f
+   where f = reverse . dropWhile isSpace
