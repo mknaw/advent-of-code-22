@@ -2,7 +2,9 @@ module Lib.Utils
   ( applyToElem,
     bindN,
     boolToInt,
+    indicesWhere,
     makeStack,
+    pairify,
     pairMap,
     trim,
   )
@@ -19,6 +21,11 @@ boolToInt False = 0
 -- | Repeat monadic bind `n` times
 bindN :: (Monad m, Integral n) => (a -> m a) -> n -> (a -> m a)
 bindN f n = foldr (>=>) return (replicate (fromIntegral n) f)
+
+-- | Convert length 2 list to a pair tuple
+pairify :: [a] -> (a, a)
+pairify [x, y] = (x, y)
+pairify _ = error "pairify: list must have exactly two elements"
 
 -- | Like <$> for a 2-tuple
 pairMap :: (a -> b) -> (a, a) -> (b, b)
@@ -38,3 +45,7 @@ applyToElem :: Int -> (a -> a) -> [a] -> [a]
 applyToElem n f xs = before ++ [f $ head after] ++ tail after
   where
     (before, after) = splitAt n xs
+
+-- | Get the indices of all elements that satisfy a predicate
+indicesWhere :: (a -> Bool) -> [a] -> [Int]
+indicesWhere f xs = map fst $ filter (f . snd) $ zip [0..] xs
