@@ -3,6 +3,7 @@ module Lib.Utils
     bindN,
     boolToInt,
     indicesWhere,
+    iterateUntilNothing,
     makeStack,
     pairify,
     pairMap,
@@ -21,6 +22,12 @@ boolToInt False = 0
 -- | Repeat monadic bind `n` times
 bindN :: (Monad m, Integral n) => (a -> m a) -> n -> (a -> m a)
 bindN f n = foldr (>=>) return (replicate (fromIntegral n) f)
+
+-- | Apply a function yielding a `Maybe` until `isNothing`.
+iterateUntilNothing :: (a -> Maybe a) -> a -> [a]
+iterateUntilNothing f x =
+  case f x of Nothing -> []
+              Just y  -> y : iterateUntilNothing f y
 
 -- | Convert length 2 list to a pair tuple
 pairify :: [a] -> (a, a)
