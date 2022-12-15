@@ -2,12 +2,14 @@ module Lib.Utils
   ( applyToElem,
     bindN,
     boolToInt,
+    both,
     indicesWhere,
     iterateUntilNothing,
     makeStack,
     pairify,
     pairMap,
     trim,
+    unpairify,
   )
 where
 
@@ -33,6 +35,14 @@ iterateUntilNothing f x =
 pairify :: [a] -> (a, a)
 pairify [x, y] = (x, y)
 pairify _ = error "pairify: list must have exactly two elements"
+
+-- | Convert a pair to a length 2 list
+unpairify :: (a, a) -> [a]
+unpairify (x, y) = [x, y]
+
+-- | Apply a function to both elements in a pair
+both :: (a -> b) -> (a, a) -> (b, b)
+both f (x, y) = (f x, f y)
 
 -- | Like <$> for a 2-tuple
 pairMap :: (a -> b) -> (a, a) -> (b, b)
