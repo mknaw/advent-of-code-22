@@ -39,6 +39,8 @@ common common-options
         , fgl ==5.8.*
         , filepath ==1.4.*
         , fin ==0.2.*
+        , linear ==1.22
+        , lens ==5.2
         , matrix ==0.3.*
         , megaparsec ==9.2.*
         , monad-loops ==0.4.*
@@ -79,7 +81,7 @@ library
         Puzzles.Day14
         Puzzles.Day15
         Puzzles.Day16
-        -- Puzzles.Day17
+        Puzzles.Day17
         -- Puzzles.Day18
         -- Puzzles.Day19
         -- Puzzles.Day20
