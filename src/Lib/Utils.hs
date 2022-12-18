@@ -8,6 +8,7 @@ module Lib.Utils
     makeStack,
     pairify,
     pairMap,
+    subsets,
     trim,
     unpairify,
   )
@@ -66,3 +67,9 @@ applyToElem n f xs = before ++ [f $ head after] ++ tail after
 -- | Get the indices of all elements that satisfy a predicate
 indicesWhere :: (a -> Bool) -> [a] -> [Int]
 indicesWhere f xs = map fst $ filter (f . snd) $ zip [0..] xs
+
+-- | Generate all subsets of a certain size
+subsets :: Int -> [a] -> [[a]]
+subsets 0 _ = [[]]
+subsets _ [] = []
+subsets n (x : xs) = map (x :) (subsets (n - 1) xs) ++ subsets n xs
