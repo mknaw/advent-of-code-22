@@ -10,6 +10,7 @@ module Lib.Utils
     pairMap,
     subsets,
     trim,
+    uncurry3,
     unpairify,
   )
 where
@@ -73,3 +74,7 @@ subsets :: Int -> [a] -> [[a]]
 subsets 0 _ = [[]]
 subsets _ [] = []
 subsets n (x : xs) = map (x :) (subsets (n - 1) xs) ++ subsets n xs
+
+-- | Converts a curried function to a function on a triple.
+uncurry3 :: (a -> b -> c -> d) -> ((a, b, c) -> d)
+uncurry3 f ~(a,b,c) = f a b c
