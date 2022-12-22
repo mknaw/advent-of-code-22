@@ -8,6 +8,7 @@ module Lib.Utils
     makeStack,
     pairify,
     pairMap,
+    roundUpDiv,
     subsets,
     trim,
     uncurry3,
@@ -78,3 +79,8 @@ subsets n (x : xs) = map (x :) (subsets (n - 1) xs) ++ subsets n xs
 -- | Converts a curried function to a function on a triple.
 uncurry3 :: (a -> b -> c -> d) -> ((a, b, c) -> d)
 uncurry3 f ~(a,b,c) = f a b c
+
+roundUpDiv :: Int -> Int -> Int
+roundUpDiv x y
+  | x `mod` y == 0 = x `div` y
+  | otherwise = x `div` y + 1
