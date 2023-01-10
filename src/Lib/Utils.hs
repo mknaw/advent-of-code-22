@@ -9,6 +9,7 @@ module Lib.Utils
     pairify,
     pairMap,
     roundUpDiv,
+    shift,
     subsets,
     trim,
     uncurry3,
@@ -17,8 +18,8 @@ module Lib.Utils
 where
 
 import Control.Monad
-import Data.Stack
 import Data.Char (isSpace)
+import Data.Stack
 
 boolToInt :: Bool -> Int
 boolToInt True = 1
@@ -31,8 +32,9 @@ bindN f n = foldr (>=>) return (replicate (fromIntegral n) f)
 -- | Apply a function yielding a `Maybe` until `isNothing`.
 iterateUntilNothing :: (a -> Maybe a) -> a -> [a]
 iterateUntilNothing f x =
-  case f x of Nothing -> []
-              Just y  -> y : iterateUntilNothing f y
+  case f x of
+    Nothing -> []
+    Just y -> y : iterateUntilNothing f y
 
 -- | Convert length 2 list to a pair tuple
 pairify :: [a] -> (a, a)
@@ -58,7 +60,8 @@ makeStack = foldr (flip stackPush) stackNew
 -- | Trim whitespace from the beginning and end of a string
 trim :: String -> String
 trim = f . f
-   where f = reverse . dropWhile isSpace
+  where
+    f = reverse . dropWhile isSpace
 
 -- | Apply a function to the element of a list
 applyToElem :: Int -> (a -> a) -> [a] -> [a]
@@ -68,7 +71,7 @@ applyToElem n f xs = before ++ [f $ head after] ++ tail after
 
 -- | Get the indices of all elements that satisfy a predicate
 indicesWhere :: (a -> Bool) -> [a] -> [Int]
-indicesWhere f xs = map fst $ filter (f . snd) $ zip [0..] xs
+indicesWhere f xs = map fst $ filter (f . snd) $ zip [0 ..] xs
 
 -- | Generate all subsets of a certain size
 subsets :: Int -> [a] -> [[a]]
@@ -78,9 +81,13 @@ subsets n (x : xs) = map (x :) (subsets (n - 1) xs) ++ subsets n xs
 
 -- | Converts a curried function to a function on a triple.
 uncurry3 :: (a -> b -> c -> d) -> ((a, b, c) -> d)
-uncurry3 f ~(a,b,c) = f a b c
+uncurry3 f ~(a, b, c) = f a b c
 
 roundUpDiv :: Int -> Int -> Int
 roundUpDiv x y
   | x `mod` y == 0 = x `div` y
   | otherwise = x `div` y + 1
+
+shift :: [a] -> [a]
+shift [] = []
+shift (x : xs) = xs ++ [x]
